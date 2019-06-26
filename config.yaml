@@ -1,0 +1,60 @@
+# Required name of the service. No spaces suggested.
+name: prog
+
+# Display name, spaces allowed.
+display_name: prog
+
+# Long description of service.
+description: prog's desc
+
+# Run as username.
+username: root
+
+arguments:
+  - --config prog.properties
+
+# Array of service dependencies.
+# Not yet fully implemented on Linux or OS X:
+# 1. Support linux-systemd dependencies, just put each full line as the
+#     element of the string array, such as
+#     "After=network.target syslog.target"
+#     "Requires=syslog.target"
+#     Note, such lines will be directly appended into the [Unit] of
+#     the generated service config file, will not check their correctness.
+dependencies:
+  - After=network.target syslog.target
+
+
+# The following fields are not supported on Windows.
+# Initial working directory.
+working_directory: /home/prog/
+chroot:
+
+
+# System specific options.
+#* OS X
+#   - LaunchdConfig string ()      - Use custom launchd config
+#   - KeepAlive     bool   (true)
+#   - RunAtLoad     bool   (false)
+#   - UserService   bool   (false) - Install as a current user service.
+#   - SessionCreate bool   (false) - Create a full user session.
+osx_opt:
+   LaunchdConfig:
+   KeepAlive: true
+   RunAtLoad: flase
+   UserService: false
+   SessionCreate: false
+
+# * POSIX
+#   - SystemdScript string ()                 - Use custom systemd script
+#   - UpstartScript string ()                 - Use custom upstart script
+#   - SysvScript    string ()                 - Use custom sysv script
+#   - RunWait       func() (wait for SIGNAL)  - Do not install signal but wait for this function to return.
+#   - ReloadSignal  string () [USR1, ...]     - Signal to send on reaload.
+#   - PIDFile       string () [/run/prog.pid] - Location of the PID file.
+#   - LogOutput     bool   (false)            - Redirect StdErr & StdOut to files.
+#   - Restart       string (always)           - How shall service be restarted.
+#   - SuccessExitStatus string ()             - The list of exit status that shall be considered as successful,
+#                                                in addition to the default ones.
+posix_opt:
+   PIDFile: /run/prog.pid
