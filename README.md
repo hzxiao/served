@@ -2,7 +2,7 @@
 
 Install programs as a deamon service on major platforms.
 
-## Suport platform
+## Support platform
 
 * Windows XP
 * Linux/(systemd | Upstart | SysV)
