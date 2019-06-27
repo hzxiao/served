@@ -106,7 +106,7 @@ name: {{.Name}}
 display_name: {{.DisplayName}}
 
 # Long description of service.
-description: prog's desc
+description: {{.Description}}
 
 # Run as username.
 username: {{.UserName}}
