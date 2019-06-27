@@ -5,6 +5,8 @@ import (
 	"github.com/kardianos/service"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"os"
+	"text/template"
 )
 
 // Config provides the setup for a Service. The Name field is required.
@@ -83,10 +85,21 @@ func (prg *program) Stop(s service.Service) error {
 }
 
 func writeConfig2File(c *Config, filename string) error {
-	return nil
+	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	t, err := template.New("").Parse(configTmpl)
+	if err != nil {
+		return err
+	}
+
+	return t.Execute(f, c)
 }
 
-const configTmpl = `# Required name of the service. No spaces suggested.
+var configTmpl = `# Required name of the service. No spaces suggested.
 name: {{.Name}}
 
 # Display name, spaces allowed.
@@ -98,8 +111,7 @@ description: prog's desc
 # Run as username.
 username: {{.UserName}}
 
-arguments:
-   {{range $i, $arg := .Arguments}} 
+arguments:{{range $i, $arg := .Arguments}} 
   - {{$arg}} {{end}}
 
 # Array of service dependencies.
@@ -110,8 +122,7 @@ arguments:
 #     "Requires=syslog.target"
 #     Note, such lines will be directly appended into the [Unit] of
 #     the generated service config file, will not check their correctness.
-dependencies:
-   {{range $i, $dep := .Dependencies}} 
+dependencies:{{range $i, $dep := .Dependencies}} 
   - {{$dep}} {{end}}
 
 
@@ -128,8 +139,7 @@ chroot: {{.ChRoot}}
 #   - RunAtLoad     bool   (false)
 #   - UserService   bool   (false) - Install as a current user service.
 #   - SessionCreate bool   (false) - Create a full user session.
-osx_opt:
-  {{range $k, $v := .OSXOpt}} 
+osx_opt:{{range $k, $v := .OSXOpt}} 
   {{$k}}: {{$v}} {{end}}
 
 # * POSIX
@@ -143,6 +153,5 @@ osx_opt:
 #   - Restart       string (always)           - How shall service be restarted.
 #   - SuccessExitStatus string ()             - The list of exit status that shall be considered as successful,
 #                                                in addition to the default ones.
-posix_opt:
-  {{range $k, $v := .POSIXOpt}} 
-  {{$k}}: {{$v}} {{end}}
+posix_opt:{{range $k, $v := .POSIXOpt}} 
+  {{$k}}: {{$v}} {{end}}`
