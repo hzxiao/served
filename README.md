@@ -16,7 +16,7 @@ Install programs as a deamon service on major platforms.
 
 ```shell
 go get github.com/hzxiao/served
-cd $GOPATH/github.com/hzxiao/served/cmd
+cd $GOPATH/src/github.com/hzxiao/served/cmd
 go install
 ```
 
