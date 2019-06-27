@@ -132,26 +132,25 @@ working_directory: {{.WorkingDirectory}}
 chroot: {{.ChRoot}}
 
 
-# System specific options.
+# System specific options and default value.
 #* OS X
-#   - LaunchdConfig string ()      - Use custom launchd config
-#   - KeepAlive     bool   (true)
-#   - RunAtLoad     bool   (false)
-#   - UserService   bool   (false) - Install as a current user service.
-#   - SessionCreate bool   (false) - Create a full user session.
+#   LaunchdConfig: ""    - Use custom launchd config
+#   KeepAlive: true
+#   RunAtLoad: false
+#   UserService: false   - Install as a current user service.
+#   SessionCreate: false - Create a full user session.
 osx_opt:{{range $k, $v := .OSXOpt}} 
   {{$k}}: {{$v}} {{end}}
 
 # * POSIX
-#   - SystemdScript string ()                 - Use custom systemd script
-#   - UpstartScript string ()                 - Use custom upstart script
-#   - SysvScript    string ()                 - Use custom sysv script
-#   - RunWait       func() (wait for SIGNAL)  - Do not install signal but wait for this function to return.
-#   - ReloadSignal  string () [USR1, ...]     - Signal to send on reaload.
-#   - PIDFile       string () [/run/prog.pid] - Location of the PID file.
-#   - LogOutput     bool   (false)            - Redirect StdErr & StdOut to files.
-#   - Restart       string (always)           - How shall service be restarted.
-#   - SuccessExitStatus string ()             - The list of exit status that shall be considered as successful,
-#                                                in addition to the default ones.
+#   SystemdScript: ""                 - Use custom systemd script
+#   UpstartScript: ""                 - Use custom upstart script
+#   SysvScript: ""                    - Use custom sysv script
+#   ReloadSignal: "USR1, ..."         - Signal to send on reaload.
+#   PIDFile: ""                       - Location of the PID file.
+#   LogOutput: false                  - Redirect StdErr & StdOut to files.
+#   Restart: always                   - How shall service be restarted.
+#   SuccessExitStatus: ""             - The list of exit status that shall be considered as successful,
+#                                     in addition to the default ones.
 posix_opt:{{range $k, $v := .POSIXOpt}} 
   {{$k}}: {{$v}} {{end}}`
